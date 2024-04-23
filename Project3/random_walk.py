@@ -1,24 +1,35 @@
-import plotly.express as px
+from random import choice
+class RandomWalk:
+    """A class to generate random walks."""
 
-from die import Die
+    def __init__(self, num_points=5000):
+        """Initialize attributes of a walk."""
+        self.num_points = num_points
+        
+        # All walks start at (0, 0).
+        self.x_values = [0]
+        self.y_values = [0]
 
-die1 = Die(8)
-die2 = Die(8)
+    def fill_walk(self):
+        """Calculate all the points in the walk."""
+        # Keep taking steps until the walk reaches the desired length.
 
-rolls = []
+        while len(self.x_values) < self.num_points:
+            # Decide which direction to go, and how far to go.
+            x_direction = choice([1, -1])
+            x_distance = choice([0, 1, 2, 3, 4])
+            x_step = x_direction * x_distance
+            
+            y_direction = choice([1, -1])
+            y_distance = choice([0, 1, 2, 3, 4])
+            y_step = y_direction * y_distance
 
-for roll_num in range(1000):
-    result = die1.roll() * die2.roll()
-    rolls.append(result)
+            # Reject moves that go nowhere.
+            if x_step == 0 and y_step == 0:
+                continue
 
-freqs = []
-possible_results = range(1, die1.num_sides * die2.num_sides + 1) # min is 2, max is 8 + 8 + 1
-
-for value in possible_results:
-    frequency = rolls.count(value)
-    freqs.append(frequency)
-
-title = "Product of rolling two D8's x1000"
-fig = px.bar(x=possible_results, y=freqs, title=title)
-
-fig.show()
+            # Calculate the new position.
+            x = self.x_values[-1] + x_step
+            y = self.y_values[-1] + y_step
+            self.x_values.append(x)
+            self.y_values.append(y)
