@@ -1,0 +1,32 @@
+{% extends 'mealapp/base.html' %}
+
+{% block content %}
+
+  <p>Meal: {{ meal.name }}</p>
+
+  <p>Meal Items:</p>
+
+  <ul>
+
+    {% for item in meal_items %}
+
+      <li>{{ item.name }}</li>
+
+    {% empty %}
+
+      <li>No items yet.</li>
+
+    {% endfor %}
+
+  </ul>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ item_form.as_p }}
+    <button type="submit">Add Meal Item</button>
+  </form>
+  {% if item_form.errors %}
+    <p>{{ item_form.errors }}</p>
+  {% endif %}
+
+{% endblock content %}

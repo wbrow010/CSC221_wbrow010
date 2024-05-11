@@ -1,0 +1,22 @@
+{% extends 'mealapp/base.html' %}
+
+{% block content %}
+
+  <p>Meals</p>
+  <ul>
+    {% for meal in meals %}
+      <li>
+        <a href="{% url 'mealapp:meal' meal.id %}">
+          {{ meal.name }}</a>
+      </li>
+    {% empty %}
+      <li>No meals yet.</li>
+    {% endfor %}
+  </ul>
+
+  <form action="{% url 'mealapp:remove_all_meals' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Remove All Meals</button>
+  </form>
+
+{% endblock content %}
